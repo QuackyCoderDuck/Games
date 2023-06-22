@@ -1,0 +1,36 @@
+local XanaxUILib = loadstring(game:HttpGet("https://pastebin.com/raw/XZz3Ytbu"))()
+local Ui = XanaxUILib:CreateWindow("Ice Spice Obby")
+local Info = Ui:CreateSection("Info")
+local ExampleSection = Ui:CreateSection("Things")
+
+Info:CreateLabel("Created by Godlike#6666")
+Info:CreateLabel("Dylan Exploits#9999 for UI")
+Info:CreateButton("Destroy UI", function() XanaxUILib.functions:DestroyGUI() end)
+
+ExampleSection:CreateLabel("Ice Spice Exploits")
+ExampleSection:CreateButton("Max Stage", function() local args = {
+    [1] = 36
+}
+game:GetService("ReplicatedStorage").SetCheckpoint:InvokeServer(unpack(args))
+end)
+ExampleSection:CreateSlider("Walkspeed", "WalkSpeed", 16, 100, false, function(ws)
+   game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ws
+end)
+
+ExampleSection:CreateButton("Fight w ice spice", function()
+    local args = {
+        [1] = 35
+    }
+    
+    game:GetService("ReplicatedStorage").SetCheckpoint:InvokeServer(unpack(args));
+    game:GetService("ReplicatedStorage").GivePistol:FireServer()
+
+end)
+
+ExampleSection:CreateButton("^Reset Game if you're at stage 36.^")
+
+ExampleSection:CreateButton("Free LuckyBlock", function()
+    
+    game:GetService("ReplicatedStorage").LuckyBlock:FireServer()
+
+    end)
