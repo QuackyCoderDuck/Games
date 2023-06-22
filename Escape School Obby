@@ -1,0 +1,199 @@
+-- Game: Escape School Obby!
+-- https://www.roblox.com/games/7027306580/Escape-School-Obby-NEW#!/game-instances
+
+local Teleport = false
+local Teleport1 = false
+local Teleport2 = false
+
+function tp()
+    while wait(0.2) do
+        local pl = game.Players.LocalPlayer.Character.HumanoidRootPart
+    local location = CFrame.new(133, 1, 515)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(133, 1, 610)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(38, 17, 561)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(37, 17, 657)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-2337, 1156, -1075)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-2365, 1127, -927)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-2413, 1127, -818)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-2412, 1127, -742)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-1570, 206, 272)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-1487, 206, 218)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-1560, 206, 58)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-1525, 206, -90)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-1431, 206, -120)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-1386, 212, -210)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-1268, 211, -208)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-1195, 80, -147)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-1108, 80, -175)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-1138, 111, -487)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-1082, 112, -599)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-918, 10, -747)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-753, 1, -751)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-752, 8, -840)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(761, 1260, -1827)
+        pl.CFrame = location
+        wait(0.2)
+        break
+    end
+end
+
+function tp2()
+    while wait(0.2) do
+        local pl = game.Players.LocalPlayer.Character.HumanoidRootPart
+        local location = CFrame.new(100, 2, 234)
+        pl.CFrame = location
+        wait(0.2)
+        break
+    end
+end
+
+function tp3()
+    while wait(0.2) do
+        local pl = game.Players.LocalPlayer.Character.HumanoidRootPart
+        local location = CFrame.new(934, 452, -1377)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(839, 0, -378)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(874, 0, -427)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(738, 0, -499)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(783, -100, -567)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(793, -100, -693)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(892, -204, -811)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(1010, -121, -772)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(1041, -121, -703)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(1119, -121, -712)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-5, 2, 152)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(45, 2, 186)
+        pl.CFrame = location
+        wait(0.2)
+        local location = CFrame.new(-7, 2, 228)
+        pl.CFrame = location
+        break
+    end
+end
+
+local SolarisLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/sol"))()
+
+
+local win = SolarisLib:New({
+  Name = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name,
+  FolderToSave = "SolarisLibStuff"
+})
+
+local tab = win:Tab("Main")
+local sec = tab:Section("Farm")
+
+sec:Toggle("Finsh Race Rest Of Race", false,"Finsh Race Rest Of Race", function(t)
+    Teleport = t
+    while Teleport do
+        task.wait()
+        tp()
+        break
+    end
+end
+)
+
+sec:Toggle("Finsh Race to -14 ", false,"Finsh Race", function(t)
+    Teleport = t
+    while Teleport do
+        task.wait()
+        tp2()
+        break
+    end
+end
+)
+
+sec:Toggle("Finsh Race to -13", false,"Finsh Race to -13", function(t)
+    Teleport = t
+    while Teleport do
+        task.wait()
+        tp3()
+        break
+    end
+end
+)
+
+local tab = win:Tab("Extra")
+local sec = tab:Section("What to do")
+local sec = tab:Section("Toggle on then off and also u will die at lvl 13 and 14")
+
+local tab = win:Tab("Misc")
+local sec = tab:Section("Player")
+
+local slider = sec:Slider("Slider", 16,500,16,1,"Slider", function(t)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = t
+    end)
+
+    local slider = sec:Slider("Slider", 50,500,50,1,"Slider", function(t)
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = t
+    end)
+
+local tab = win:Tab("Credits")
+local sec = tab:Section("Credits to CandysNetwork#8401 for making this script")
+local sec = tab:Section("Please don't judge to hard I just started scripting")
+local sec = tab:Section("I would'nt mind some help scripting if anyone has any tips.")
+local sec = tab:Section("DM me on Discord CandysNetwork#8401")
