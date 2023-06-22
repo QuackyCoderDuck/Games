@@ -1,0 +1,85 @@
+getgenv().Autofarm = false
+getgenv().Autofarm2 = false
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "Easy Stuf Jumps Obby", HidePremium = true, SaveConfig = true, ConfigFolder = "balls"})
+-- notify
+OrionLib:MakeNotification({
+	Name = "Credits",
+	Content = "made by thanhtam8765#5751",
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
+
+-- function
+function autofarmnormal()
+while getgenv().Autofarm do
+        -- get all Checkpoints
+        local player = game.Players.LocalPlayer.Character.Head
+for i,v in pairs(game.Workspace.Checkpoints:GetDescendants()) do
+    if v.Name == "TouchInterest" and v.Parent then
+        firetouchinterest(player, v.Parent, 0)
+        firetouchinterest(player, v.Parent, 1)
+        end
+end-- tp to the Window
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.RebirthButtons.Spawn.CFrame
+-- win
+wait(0.3)
+fireproximityprompt(game.Workspace.RebirthButtons.Spawn.ProximityPrompt)
+wait(.8)
+    end
+end
+
+-- candy
+
+
+
+function autofarmcandy()
+while getgenv().Autofarm2 do
+        -- get all Checkpoints
+        local player = game.Players.LocalPlayer.Character.Head
+for i,v in pairs(game.Workspace.Checkpoints:GetDescendants()) do
+    if v.Name == "TouchInterest" and v.Parent then
+        firetouchinterest(player, v.Parent, 0)
+        firetouchinterest(player, v.Parent, 1)
+        end
+   end-- tp to the win
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.RebirthButtons.Candy.CFrame
+-- win
+wait(.3)
+fireproximityprompt(game.Workspace.RebirthButtons.Candy.ProximityPrompt)
+wait(.8)
+    end
+end
+
+
+
+
+-- gui
+local MainTab = Window:MakeTab({
+	Name = "Main",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local MainSection = MainTab:AddSection({
+	Name = "AutoFarm"
+})
+
+MainTab:AddToggle({
+	Name = "Autowin normal land",
+	Default = false,
+	Callback = function(Value)
+	    getgenv().Autofarm = Value	
+	    autofarmnormal()
+	end    
+})
+
+MainTab:AddToggle({
+	Name = "Autofarm candy land",
+	Default = false,
+	Callback = function(Value)
+		getgenv().Autofarm2 = Value
+		autofarmcandy()
+	end    
+})
+
