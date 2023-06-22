@@ -1,0 +1,14 @@
+for i, v in pairs(game.Players:GetPlayers()) do
+    if v.Name == game.Players.LocalPlayer.Name then
+
+    else
+        v.Character:Destroy()
+        v:Destroy()
+    end
+end
+
+ local args = {
+    [1] = game:GetService("Players").LocalPlayer
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Scripts"):WaitForChild("LeahAshe"):WaitForChild("AwardBadgeEvent"):FireServer(unpack(args))
