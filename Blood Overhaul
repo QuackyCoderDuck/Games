@@ -1,0 +1,20 @@
+for i, v in pairs(getgc(true)) do
+    if typeof(v) == 'table' and rawget(v, 'equip_time') then
+        v.rate = 0.00015
+        v.auto = true
+    end
+end
+--You could modify more, for an example:
+
+for i, v in pairs(getgc(true)) do
+    if typeof(v) == 'table' and rawget(v, 'equip_time') then
+        v.rate = 0.0000001
+        v.auto = true
+        v.force = 9e9
+        v.critical = 9e9
+        
+        v.shotgun.enabled = true
+        v.shotgun.amount = 25
+        v.shotgun.spreadness = 2.5
+    end
+end
