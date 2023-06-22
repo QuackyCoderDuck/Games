@@ -1,0 +1,174 @@
+local loadfunc = false
+
+-- Gui
+local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
+
+local Window = Rayfield:CreateWindow({
+    Name = "Scorch Hub",
+    LoadingTitle = "Why you readin this?",
+    LoadingSubtitle = "by Scorch",
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = nil, -- Create a custom folder for your hub/game
+        FileName = "Scorch Hub"
+    },
+})
+
+local Tab = Window:CreateTab("Main") 
+
+
+
+
+
+local Section = Tab:CreateSection("Auto Fight")
+
+
+local Toggle = Tab:CreateToggle({
+    Name = "Auto fight World 1",
+    CurrentValue = false,
+    Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(Value)
+        loadfunc = Value
+        spawn(function()
+            while loadfunc do
+                local args = {
+                    [1] = "Combat",
+                    [2] = {
+                        [1] = workspace.Mobs:FindFirstChild("1"):FindFirstChild(""),
+                        [2] = workspace.Mobs:FindFirstChild("2"):FindFirstChild(""),
+                        [3] = workspace.Mobs:FindFirstChild("3"):FindFirstChild(""),
+                        [4] = workspace.Mobs:FindFirstChild("4"):FindFirstChild(""),
+                        [5] = workspace.Mobs:FindFirstChild("5"):FindFirstChild(""),
+                        [6] = workspace.Mobs:FindFirstChild("6"):FindFirstChild(""),
+                        [7] = workspace.Mobs:FindFirstChild("7"):FindFirstChild(""),
+                        [8] = workspace.Mobs:FindFirstChild("8"):FindFirstChild(""),
+                        [9] = workspace.Mobs:FindFirstChild("9"):FindFirstChild(""),
+                        [10] = workspace.Mobs:FindFirstChild("10"):FindFirstChild(""),
+                        [11] = workspace.Mobs:FindFirstChild("11"):FindFirstChild(""),
+                        [12] = workspace.Mobs:FindFirstChild("12"):FindFirstChild(""),
+                        [13] = workspace.Mobs:FindFirstChild("13"):FindFirstChild(""),
+                        [14] = workspace.Mobs:FindFirstChild("14"):FindFirstChild(""),
+                        [15] = workspace.Mobs:FindFirstChild("15"):FindFirstChild(""),
+                        [16] = workspace.Mobs:FindFirstChild("16"):FindFirstChild(""),
+                        [17] = workspace.Mobs:FindFirstChild("17"):FindFirstChild(""),
+                        [18] = workspace.Mobs:FindFirstChild("18"):FindFirstChild(""),
+                        [19] = workspace.Mobs:FindFirstChild("19"):FindFirstChild(""),
+                        [20] = workspace.Mobs:FindFirstChild("20"):FindFirstChild(""),
+                        [21] = workspace.Mobs:FindFirstChild("21"):FindFirstChild(""),
+                        [22] = workspace.Mobs:FindFirstChild("22"):FindFirstChild(""),
+                        [23] = workspace.Mobs:FindFirstChild("23"):FindFirstChild(""),
+                        [24] = workspace.Mobs:FindFirstChild("24"):FindFirstChild(""),
+                        [25] = workspace.Mobs:FindFirstChild("25"):FindFirstChild(""),
+                        [26] = workspace.Mobs:FindFirstChild("26"):FindFirstChild(""),
+                        [27] = workspace.Mobs:FindFirstChild("27"):FindFirstChild(""),
+                        [28] = workspace.Mobs:FindFirstChild("28"):FindFirstChild(""),
+                        [29] = workspace.Mobs:FindFirstChild("29"):FindFirstChild(""),
+                        [30] = workspace.Mobs:FindFirstChild("30"):FindFirstChild(""),
+                        [31] = workspace.Mobs:FindFirstChild("31"):FindFirstChild(""),
+                        [32] = workspace.Mobs:FindFirstChild("32"):FindFirstChild(""),
+                        [33] = workspace.Mobs:FindFirstChild("33"):FindFirstChild(""),
+                        [34] = workspace.Mobs:FindFirstChild("34"):FindFirstChild(""),
+                        }
+                    }
+                    game:GetService("Players").LocalPlayer.PlayerGui.PunchV2.Function:FireServer(unpack(args))
+                    wait()
+                end
+            end)
+        end})
+
+
+local Toggle = Tab:CreateToggle({
+    Name = "Auto fight World 2",
+         CurrentValue = false,
+            Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+            Callback = function(Value)
+                loadfunc = Value
+                spawn(function()
+                    while loadfunc do
+                        local args = {
+                            [1] = "Combat",
+                            [2] = {
+                                [1] = workspace.MobsZone2:FindFirstChild("35"):FindFirstChild(""),
+                                [2] = workspace.MobsZone2:FindFirstChild("36"):FindFirstChild(""),
+                                [3] = workspace.MobsZone2:FindFirstChild("37"):FindFirstChild(""),
+                                [4] = workspace.MobsZone2:FindFirstChild("38"):FindFirstChild(""),
+                                [5] = workspace.MobsZone2:FindFirstChild("39"):FindFirstChild(""),
+                                [6] = workspace.MobsZone2:FindFirstChild("40"):FindFirstChild(""),
+                                [7] = workspace.MobsZone2:FindFirstChild("41"):FindFirstChild(""),
+                                [8] = workspace.MobsZone2:FindFirstChild("42"):FindFirstChild(""),
+                                [9] = workspace.MobsZone2:FindFirstChild("43"):FindFirstChild(""),
+                                [10] = workspace.MobsZone2:FindFirstChild("44"):FindFirstChild(""),
+                                [11] = workspace.MobsZone2:FindFirstChild("45"):FindFirstChild(""),
+                                [12] = workspace.MobsZone2:FindFirstChild("46"):FindFirstChild(""),
+                                [13] = workspace.MobsZone2:FindFirstChild("47"):FindFirstChild(""),
+                                [14] = workspace.MobsZone2:FindFirstChild("48"):FindFirstChild(""),
+                                [15] = workspace.MobsZone2:FindFirstChild("49"):FindFirstChild(""),
+                                [16] = workspace.MobsZone2:FindFirstChild("50"):FindFirstChild(""),
+                                [17] = workspace.MobsZone2:FindFirstChild("51"):FindFirstChild(""),
+                                [18] = workspace.MobsZone2:FindFirstChild("52"):FindFirstChild(""),
+                                }
+                            }
+                            game:GetService("Players").LocalPlayer.PlayerGui.PunchV2.Function:FireServer(unpack(args))
+                            wait()
+                        end
+                    end)
+                end})
+        
+
+local Toggle = Tab:CreateToggle({
+    Name = "Auto fight World 3",
+    CurrentValue = false,
+    Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(Value)
+        loadfunc = Value
+        spawn(function()
+            while loadfunc do
+                local args = {
+                    [1] = "Combat",
+                    [2] = {
+                        [1] = workspace.MobsZone3:FindFirstChild("54"):FindFirstChild(""),
+                        [2] = workspace.MobsZone3:FindFirstChild("55"):FindFirstChild(""),
+                        [3] = workspace.MobsZone3:FindFirstChild("56"):FindFirstChild(""),
+                        [4] = workspace.MobsZone3:FindFirstChild("57"):FindFirstChild(""),
+                        [5] = workspace.MobsZone3:FindFirstChild("58"):FindFirstChild(""),
+                        [6] = workspace.MobsZone3:FindFirstChild("59"):FindFirstChild(""),
+                        [7] = workspace.MobsZone3:FindFirstChild("60"):FindFirstChild(""),
+                        [8] = workspace.MobsZone3:FindFirstChild("61"):FindFirstChild(""),
+                        [9] = workspace.MobsZone3:FindFirstChild("62"):FindFirstChild(""),
+                        [10] = workspace.MobsZone3:FindFirstChild("63"):FindFirstChild(""),
+                        [11] = workspace.MobsZone3:FindFirstChild("64"):FindFirstChild(""),
+                        [12] = workspace.MobsZone3:FindFirstChild("65"):FindFirstChild(""),
+                        [13] = workspace.MobsZone3:FindFirstChild("66"):FindFirstChild(""),
+                        [14] = workspace.MobsZone3:FindFirstChild("67"):FindFirstChild(""),
+                        [15] = workspace.MobsZone3:FindFirstChild("68"):FindFirstChild(""),
+                        [16] = workspace.MobsZone3:FindFirstChild("69"):FindFirstChild(""),
+                        [17] = workspace.MobsZone3:FindFirstChild("70"):FindFirstChild(""),
+                    }
+                }
+                game:GetService("Players").LocalPlayer.PlayerGui.PunchV2.Function:FireServer(unpack(args))
+                wait()
+            end
+        end)
+    end})
+
+
+    local Section = Tab:CreateSection("Op auto rebirth")
+
+    _G.rebirthop = false
+    
+    local function OnToggle(Value)
+        _G.rebirthop = Value
+    end
+    
+    local Toggle = Tab:CreateToggle({
+        Name = "Auto Rebirth",
+        CurrentValue = false,
+        Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+        Callback = function(Value)
+            OnToggle(Value)
+            while _G.rebirthop do
+                task.wait()
+                game:GetService("ReplicatedStorage").Events.RebirthEvent2:FireServer()
+            end
+        end,
+    })
