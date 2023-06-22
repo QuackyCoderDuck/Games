@@ -1,0 +1,148 @@
+local workspace = game:GetService("Workspace")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+
+
+function GetPlayerList()
+    local t = {}
+    for k,v in ipairs(Players:GetChildren()) do
+        if v == LocalPlayer then continue end
+
+        table.insert(t, v.Name)
+    end
+    return t
+end
+
+
+local Library = loadstring(game:HttpGet("https://pastebin.com/raw/b9aMzZc3", true))()
+local Flags = Library.Flags
+
+
+--Library.DefaultColor = Color3.fromRGB(65, 143, 232)
+
+local autoWindow = Library:Window({
+    Text = "Auto"
+})
+
+local teleportWindow = Library:Window({
+    Text = "Teleport"
+})
+
+local miscWindow = Library:Window({
+    Text = "Misc"
+})
+
+autoWindow:Toggle({
+    Text = "Collect Pickups",
+    Callback = function(bool)
+        RunWhileFunc("collectPickups", bool, CollectPickups)
+    end
+})
+
+autoWindow:Toggle({
+    Text = "Auto Unragdoll",
+    Callback = function(bool)
+        RunWhileFunc("autoUnragdoll", bool, UnRagdoll)
+    end
+})
+
+teleportWindow:Toggle({
+    Text = "All to Me",
+    Callback = function(bool)
+        RunWhileFunc("plyToMe", bool, function()
+            for k,v in ipairs(GetPlayerList()) do
+                PlyToMe(Players[v].Character)
+            end
+        end)
+    end
+})
+
+
+local selectedPlayer
+teleportWindow:Toggle({
+    Text = "Player to Me",
+    Callback = function(bool)
+        RunWhileFunc("plyToMe", bool, function()
+            if not selectedPlayer then return end
+            PlyToMe(selectedPlayer)
+        end)
+    end
+})
+
+
+local playerList; playerList = teleportWindow:Dropdown({
+    Text = "TP Player",
+    List = {},
+    Callback = function(item)
+        local ply = workspace[item]
+        if ply then selectedPlayer = ply end
+    end
+})
+
+function playerList:PreClick(opened)
+    if not opened then return end
+
+    self:Set(GetPlayerList())
+    task.wait(0.1)
+end
+
+teleportWindow:Button({
+    Text = "TP to Meteorite",
+    Callback = function(bool)
+        if not TPToMeteorite() then
+            Library:Notification({
+                Text = "No Meteorite Found.",
+                Duration = 5
+            })
+        end
+    end
+})
+
+miscWindow:Keybind({
+    Text = "Toggle Library",
+    Default = Enum.KeyCode.RightAlt,
+    Callback = function()
+        Library:Toggle()
+    end
+})
+
+function RunWhileFunc(key, toggle, func)
+    getgenv()[key] = toggle
+    spawn(function()
+        while getgenv()[key] do
+            func()
+            task.wait()
+        end
+    end)
+end
+
+
+function CollectPickups()
+    for k,obj in ipairs(workspace:GetChildren()) do
+        if not obj:IsA("Part") or (obj.Name ~= "Gem" and not string.find(obj.Name, "Pickup")) then continue end
+
+        firetouchinterest(LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), obj, 1)
+        task.wait()
+        firetouchinterest(LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), obj, 0)
+    end
+end
+
+function UnRagdoll()
+    game:GetService("ReplicatedStorage").Events.unRagdoll:FireServer(LocalPlayer.Character)
+    task.wait(0.1)
+end
+
+function TPToMeteorite()
+    local obj = workspace.Meteorites:FindFirstChild("Meteorite")
+    if obj then
+        LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = obj:FindFirstChild("RootPart").CFrame
+        return true
+    end
+
+    return false
+end
+
+function PlyToMe(ply)
+    ply:FindFirstChild("HumanoidRootPart").CFrame = LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame + (LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame.LookVector * 6.5)
+end
