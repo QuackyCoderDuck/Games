@@ -1,1 +1,1056 @@
+--[[
+"What do you mean The Hand can't make black holes?" 
+ 
+MUGEN Okuyasu by coolman6687
+
+Controls:
+
+   --General--
+ Q = Switch Modes (Stand Off/ Stand On) <-- can be toggled during moves
+ M1 = Jab
+ K = Toggle Visual Aura
+ P = Pose ()
+ 
+  --Stand Off--
+ E = Uppercut
+ R = Two-Piece Combo
+ T = Beatdown
+ F = Ranged Black Hole
+ C = Roll
+ 
+ --Stand On--
+ E = Burst Barrage
+ R = Erasure
+ T = Chop
+ F = Singularity Point (AOE)
+ V = Space Erasure (bring player)
+ C = Dash
+
+
+ Note: this script works with any humanoid stand. Sounds may repeat on laggy servers :(
+]]--
+
+
+--spohrtzdamage
+local debris = game:GetService("Debris")
+
+--Events
+local replicatedstorage = game:GetService("ReplicatedStorage")
+local damageevent = replicatedstorage.Damage
+local damageevent2 = replicatedstorage.BurnDamage
+local blockevent = replicatedstorage.Block
+local blockevent2 = replicatedstorage.SuperArmor
+local timestopevent = replicatedstorage.Timestop
+local transparencyevent = replicatedstorage.Transparency
+local jumpevent = replicatedstorage.Jump
+local jumpevent2 = replicatedstorage.Jump2
+local dodgeevent = replicatedstorage.Dodge
+local anchorevent = replicatedstorage.Anchor
+local trailevent = replicatedstorage.Trail
+local jumpevent = replicatedstorage.Jump
+local velocityevent = replicatedstorage.Velocity
+local poseevent = replicatedstorage.Menacing
+local knockevent = replicatedstorage.Knock
+local knockclientevent = replicatedstorage.KnockClient
+local knockedevent = replicatedstorage.Knocked
+local getupevent = replicatedstorage.GetUp
+local berserkclientevent = replicatedstorage.BerserkClient
+local tauntevent = replicatedstorage.Taunt
+local berserkevent = replicatedstorage.Berserk
+local rtzevent = replicatedstorage.RTZ
+local sansdamageevent = replicatedstorage.Damage12Sans
+local sansdamage2event = replicatedstorage.Damage11Sans
+local damage12event = replicatedstorage.Damage12
+local damage3event = replicatedstorage.Damage3
+local hamonswordevent = replicatedstorage.HamonSword
+local damage12endermanevent = replicatedstorage.Damage12Enderman
+local gravityshiftevent = replicatedstorage.GravityShift
+local strongpunchevent = replicatedstorage.StrongPunch
+local tauntevent = replicatedstorage.Taunt
+local sptwpunchevent = replicatedstorage.SPTWtspunch
+ 
+--player
+local plr = game:GetService("Players").LocalPlayer
+repeat
+	wait()
+until plr.Character and plr.Character.Humanoid
+local chr = plr.Character
+local human = chr.Humanoid
+local hrp = chr.HumanoidRootPart
+mouse = plr:GetMouse()
+cam = workspace.CurrentCamera
+
+local head = chr["Head"]
+local ntorso = chr["Torso"]
+local rightarm = chr["Right Arm"]
+local leftarm = chr["Left Arm"]
+local rightleg = chr["Right Leg"]
+local leftleg = chr["Left Leg"]
+local rot = chr["HumanoidRootPart"]
+ 
+ 
+local stand = chr:WaitForChild("Stand")
+
+--Character Animations
+local anim0 = Instance.new("Animation") -- idle
+anim0.AnimationId = "rbxassetid://3530904726"
+local anim1 = Instance.new("Animation") -- dash
+anim1.AnimationId = "rbxassetid://3445906008"
+local anim2 = Instance.new("Animation") -- jab
+anim2.AnimationId = "rbxassetid://4774879706"
+local anim3 = Instance.new("Animation") -- block
+anim3.AnimationId = "rbxassetid://3445824199"
+local anim4 = Instance.new("Animation") -- UI Dodge
+anim4.AnimationId = "rbxassetid://5633583111"
+local anim5 = Instance.new("Animation") -- uppercut
+anim5.AnimationId = "rbxassetid://5635099356"
+local anim6 = Instance.new("Animation") -- dash jab
+anim6.AnimationId = "rbxassetid://4814777086"
+local anim7 = Instance.new("Animation") --roar
+anim7.AnimationId = "rbxassetid://5621883393" 
+local anim8 = Instance.new("Animation") --float
+anim8.AnimationId = "rbxassetid://4787079415" 
+local anim9 = Instance.new("Animation") --pose
+anim9.AnimationId = "rbxassetid://3850070610"
+local anim10 = Instance.new("Animation") --pose
+anim10.AnimationId = "rbxassetid://3850064912"
+local anim11 = Instance.new("Animation")
+anim11.AnimationId = "rbxassetid://3894577205"
+local anim12 = Instance.new("Animation")
+anim12.AnimationId = "rbxassetid://3579948827"
+local anim13 = Instance.new("Animation")
+anim13.AnimationId = "rbxassetid://3804938028"
+local anim14 = Instance.new("Animation")
+anim14.AnimationId = "rbxassetid://5633584586"
+local anim15 = Instance.new("Animation")
+anim15.AnimationId = "rbxassetid://3675049044" -- bloodsuck
+local anim16 = Instance.new("Animation")
+anim16.AnimationId = "rbxassetid://3683231351" -- grab
+local anim17 = Instance.new("Animation")
+anim17.AnimationId = "rbxassetid://4774988533"
+local anim18 = Instance.new("Animation")
+anim18.AnimationId = "rbxassetid://5482300918" --dash
+
+local dashanim = human:LoadAnimation(anim1)
+local jabanim = human:LoadAnimation(anim2)
+local blockanim = human:LoadAnimation(anim3)
+local uidodgeanim = human:LoadAnimation(anim4)
+local uidodgeanim2 = human:LoadAnimation(anim14)
+local uppercutanim = human:LoadAnimation(anim5)
+local floatanim = human:LoadAnimation(anim8)
+local poseanim = human:LoadAnimation(anim9)
+local roaranim = human:LoadAnimation(anim7)
+local pose2anim = human:LoadAnimation(anim10)
+local throwanim = human:LoadAnimation(anim11)
+local slapanim = human:LoadAnimation(anim12)
+local highkickanim = human:LoadAnimation(anim13)
+local grabanim = human:LoadAnimation(anim16)
+local holdanim = human:LoadAnimation(anim15)
+local dashjabanim = human:LoadAnimation(anim6)
+local jab2 = human:LoadAnimation(anim17)
+local surfanim = human:LoadAnimation(anim18)
+
+poseanim.Looped = true
+poseanim.Priority = "Idle"
+
+--Stand Animations
+local animS0 = Instance.new("Animation") --stand idle
+animS0.AnimationId = "rbxassetid://5626397526"
+local animS1 = Instance.new("Animation") -- TH Slash
+animS1.AnimationId = "rbxassetid://4513430622"
+local animS2 = Instance.new("Animation") -- Barrage
+animS2.AnimationId = "rbxassetid://2763936707"
+local animS3 = Instance.new("Animation") -- Strong Punch
+animS3.AnimationId = "rbxassetid://2876975825"
+local animS4 = Instance.new("Animation") -- groundpunch
+animS4.AnimationId = "rbxassetid://4792750232"
+local animS5 = Instance.new("Animation") -- chop
+animS5.AnimationId = "rbxassetid://5513729813"
+local animS6 = Instance.new("Animation")
+animS6.AnimationId = "rbxassetid://5509035754"
+local animS7 = Instance.new("Animation")
+animS7.AnimationId = "rbxassetid://3445781532"
+
+local thehandidle = human:LoadAnimation(animS0)
+local thehandslashanim = human:LoadAnimation(animS1)
+local thehandbarrageanim = human:LoadAnimation(animS2)
+local thehandstronganim = human:LoadAnimation(animS3)
+local thehandgroundanim = human:LoadAnimation(animS4)
+local thehandchopanim = human:LoadAnimation(animS5)
+local thehandchopheldanim = human:LoadAnimation(animS6)
+local thehandkickanim = human:LoadAnimation(animS7)
+
+--song list
+
+--[[
+local songs = {"rbxassetid://9166017527", "rbxassetid://4702564143", "rbxassetid://179769601", 
+    "rbxassetid://9501926288", "rbxassetid://4597527197", 
+    "rbxassetid://9673482558" , "rbxassetid://9166716901", "rbxassetid://11563723484", 
+    "rbxassetid://12661839468", "rbxassetid://12661978592", "rbxassetid://9129969666", "rbxassetid://11742900435", "rbxassetid://8963844468", "rbxassetid://12661978592"} 
+]]--
+-- voice lines
+local voiceLines = {"rbxassetid://5892048067", "rbxassetid://8176755722", "rbxassetid://5720839714", "rbxassetid://2500654567", "rbxassetid://8176755722", "rbxassetid://4158524119", "rbxassetid://9511307877", "rbxassetid://6977528461"}
+
+local sfx = {"rbxassetid://6265148864", "rbxassetid://535817500", "rbxassetid://8164951181", "rbxassetid://2767090", "rbxassetid://2101137" , "rbxassetid://10209268", "rbxassetid://6653558293", "rbxassetid://5681644814", "rbxassetid://243702801"}
+--general variables
+local modes = {"Normal", "Alter Logic"}
+local currentMode = modes[1]
+local damageMod = 1
+local moveactive = false
+local moveactive2 = false
+local debounce = false
+local dead = false
+local disableresist = false
+local poseCooldown = false
+local timePosRes = false
+local dashCooldown = false
+local poseMusic = "rbxassetid://1842801942"--"rbxassetid://1843497734" --alt: rbxassetid://12661839468
+-- alt: "rbxassetid://12661839468"
+-- setup functions
+function standTransparent(bool)
+   if bool == true then
+       for _, p in pairs(stand:GetChildren())  do
+            transparencyevent:FireServer(p, 1)
+        end
+  else
+        for _, p in pairs(stand:GetChildren())  do
+        if p.Name ~= "StandHumanoidRootPart" then
+            transparencyevent:FireServer(p, 0.5)
+        end
+   end
+    end
+end
+function destroyStandMoveset()
+   local mystand = nil
+    for i,v in pairs(game:GetService("Lighting"):GetChildren())do
+        for i,v2 in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren())do
+            if v:IsA("LocalScript") and v2:IsA("LocalScript") then
+                if v.Name == v2.Name then
+                    mystand = v2.Name
+                end
+            end
+        end
+    end
+    game.Players.LocalPlayer.Character[mystand]:Destroy() 
+end
+
+--general functions
+function createWeld(obj1, obj2)
+    local weld = Instance.new("WeldConstraint", obj1)
+    weld.Part0 = obj1
+    weld.Part1 = obj2
+end
+
+function createHitbox(obj, sizeMult)
+    local hitbox = Instance.new("Part", chr)
+    hitbox.Name = "hitbox"
+    hitbox.CFrame = obj.CFrame
+    hitbox.Anchored = false
+    hitbox.Transparency = 1
+    hitbox.Size = obj.Size * sizeMult
+    hitbox.Massless = true
+    hitbox.CanCollide = false
+    hitbox.Color = Color3.new(0,0,0)
+    createWeld(hitbox, obj)
+    return hitbox
+end
+
+function checkRagdoll()
+   return chr.Ragdoll.Value 
+end
+
+function erasureDamage(hit)
+    hamonswordevent:FireServer(hit.parent.Humanoid, 1e-320, math.huge, Vector3.new(-1e7, -1e7, 0))
+    damage3event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 99, 10, Vector3.new(9e999,9e999,0), 0.01, "rbxassetid://1921987900", 1, 20)
+    sansdamageevent:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 99, 0, Vector3.new(0, 0, 0), 0.01, "rbxassetid://1921987900", 1, 20)
+    sansdamage2event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 99, 0, Vector3.new(0, 0, 0), 0.001, "rbxassetid://1921987900", 1, 20)
+    GravityShift:FireServer(hit.parent.Humanoid, math.huge)
+end
+
+
+local antiflingactive = false
+function toggleAntiFling()
+	if antiflingactive == false then
+		antiflingactive = true
+		replicatedstorage.STWRTZ:FireServer(true)
+		replicatedstorage.RTZ:FireServer(true)
+		print("active")
+	else
+		antiflingactive = false
+		replicatedstorage.STWRTZ:FireServer(false)
+		replicatedstorage.RTZ:FireServer(false)
+		print("inactive")
+	end
+end
+local effectsactive = Instance.new("BoolValue")
+effectsactive.Value = true
+effectsactive.Parent = chr
+function toggleeffects()
+    if effectsactive.Value == true then
+        effectsactive.Value = false
+        print("inactive")
+    elseif effectsactive.Value == false then
+        effectsactive.Value = true
+        print("active")
+    end
+end
+
+function intro()
+   if not moveactive then
+        moveactive = true
+        
+   end
+end
+
+function anchorChar(p, bool)
+    if bool == true then
+       for _, l in pairs(p:GetChildren()) do
+            anchorevent:FireServer(l, true)
+       end
+    elseif bool == false then
+        for _, l in pairs(p:GetChildren()) do
+            anchorevent:FireServer(l, false)
+       end
+    end
+end
+
+-- HUMAN MOVESET FUNCTIONS
+function dash()
+    if moveactive == false and dashCooldown == false then
+        moveactive = true
+        dashCooldown = true
+        --coroutine.resume(coroutine.create(function()
+           -- start = tick()
+           -- while moveactive == true do
+               -- sansdamage2event:FireServer(human, chr.HumanoidRootPart.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.001, songs[2], 1, 5)
+               -- task.wait(0.65)
+            --end
+        --end))
+                local bodyvelo = Instance.new("BodyVelocity")
+                bodyvelo.Name = "bvel"
+                bodyvelo.P = math.huge
+                bodyvelo.MaxForce = Vector3.new(100000, 0, 100000)
+                coroutine.resume(coroutine.create(function()
+            while moveactive == true do
+                local bv = bodyvelo:Clone()
+                bv.Velocity = hrp.CFrame.LookVector * 100
+                bv.Parent = hrp
+                dashanim:Play(0.1, 3, 3) 
+                debris:AddItem(bv, 0.15)
+                task.wait(0.10)
+            end
+        end))
+        --debris:AddItem(bodyvelo, 0.25)
+        mouse.KeyUp:Connect(function(key)
+           if key == "c" then
+                task.wait(0.1)
+                moveactive = false
+                task.spawn(function()
+                    task.wait(0.5)
+                    dashCooldown = false
+                end)
+           end
+        end)
+    end
+end
+
+function jab()
+    if moveactive == false then
+       moveactive = true
+       jabanim:Play(0.1, 3, 3)
+       local plrHit = {}
+       local hb = createHitbox(leftarm, 1.3)
+       hb.Touched:Connect(function(hit)
+           if hit.parent:FindFirstChild("Humanoid") and hit.parent.Name ~= plr.Name and not debounce then
+                debounce = true
+                if not table.find(plrHit, hit.parent) then
+                    table.insert(plrHit, hit.parent)
+                    damageevent:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 15, 0.3, hrp.CFrame.LookVector*20.5, "rbxassetid://241837157", 0.075, Color3.new(255,255,255), "rbxassetid://8704616653", 1, 3.5)
+                     task.wait(0.1)
+                end
+           end
+           debounce = false
+        end)
+       debris:AddItem(hb, 0.1)
+       task.wait(0.2)
+       moveactive = false
+    end
+end
+
+function uppercut()
+    if moveactive == false then
+       moveactive = true
+       uppercutanim:Play(0.1, 3, 3)
+       task.wait(0.1)
+       sansdamage2event:FireServer(human, chr.HumanoidRootPart.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.001, "rbxassetid://5873885300", 1, 5)
+       replicatedstorage.VampireDash:FireServer(BrickColor.new("White"))
+       local hb = createHitbox(rightarm, 1.3)
+       local plrHit = {}
+       hb.Touched:Connect(function(hit)
+           if hit.parent:FindFirstChild("Humanoid") and hit.parent.Name ~= plr.Name then
+                if not table.find(plrHit, hit.parent) then
+                   table.insert(plrHit, hit.parent)
+                    sansdamage2event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 60, 0, Vector3.new(0, 0, 0), 0.001, "rbxassetid://3240049847", 1, 5)
+                    damage3event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 30, 0.5, Vector3.new(0, 30, 10), 0.01, "rbxassetid://1921987900", 1, 20)
+                    damageevent:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 15, 0.3, hrp.CFrame.LookVector*20.5, "rbxassetid://241837157", 0.075, Color3.new(255,255,255), "rbxassetid://8704616653", 1, 3.5)
+                    knockevent:FireServer(hit.parent.Humanoid)
+                end
+           end
+        end)
+       debris:AddItem(hb, 0.4)
+       task.wait(0.2)
+       moveactive = false
+    end
+end
+
+function slapkick()
+   if not moveactive then
+        moveactive = true
+        slapanim:Play(0.1, 1, 2)
+        task.wait(0.15)
+        local hb = createHitbox(rightarm, 1.3)
+        local plrHit = {}
+        hb.Touched:Connect(function(hit)
+           if hit.parent:FindFirstChild("Humanoid") and hit.parent.Name ~= plr.Name and not debounce then
+               debounce = true
+               if not table.find(plrHit, hit.parent) then
+                   table.insert(plrHit, hit.parent)
+                   sansdamage2event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 30, 0, Vector3.new(0, 0, 0), 0.001, "rbxassetid://9076225494", 1, 5)
+                   damage3event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 30, 0.5, Vector3.new(0, 30, 10), 0.01, "rbxassetid://1921987900", 1, 20)
+                   damageevent:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 15, 0.3, hrp.CFrame.LookVector*20.5, "rbxassetid://241837157", 0.075, Color3.new(255,255,255), "rbxassetid://8704616653", 1, 3.5)
+                end
+           end
+            debounce = false
+        end)
+        debris:AddItem(hb, 0.4)
+        task.wait(0.4)
+        
+        highkickanim:Play(0.1, 2, 3)
+        local hb2 = createHitbox(rightleg, 1.5)
+        local plrHit2 = {}
+        hb2.Touched:Connect(function(hit)
+           if hit.parent:FindFirstChild("Humanoid") and hit.parent.Name ~= plr.Name and not debounce then
+               debounce = true
+               if not table.find(plrHit2, hit.parent) then
+                   table.insert(plrHit2, hit.parent)
+                   sansdamage2event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 30, 0, Vector3.new(0, 0, 0), 0.001, "rbxassetid://6265148218", 1, 5)
+                   damage3event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 30, 0.5, Vector3.new(0, 30, 10), 0.01, "rbxassetid://1921987900", 1, 20)
+                   damageevent:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 15, 0.3, hrp.CFrame.LookVector*20.5, "rbxassetid://241837157", 0.075, Color3.new(255,255,255), "rbxassetid://8704616653", 1, 3.5)
+                   knockevent:FireServer(hit.parent.Humanoid)
+                end
+           end
+            debounce = false
+        end)
+        debris:AddItem(hb2, 0.4)
+        task.wait(0.4)
+        moveactive = false
+   end
+end
+
+local duration = 3
+function miniBlackHole()
+    if moveactive == false then
+      moveactive = true
+      local deb = false
+      standTransparent(false)
+      throwanim:Play(0.1, 1, 1)
+      coroutine.resume(coroutine.create(function()
+    	start = tick()
+    	while deb == false do
+    		sansdamage2event:FireServer(chr.Humanoid, hrp.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.1, voiceLines[8], 1, 5)
+    		task.wait(0.65)
+    	end
+      end))
+      task.wait(0.5)
+      local bullet = Instance.new("Part")
+      bullet.Size = Vector3.new(2, 2, 2)
+      bullet.Massless = true
+      bullet.CanCollide = false
+      bullet.Transparency = 1
+      bullet.CFrame = hrp.CFrame * CFrame.new(1.3, 1, 1)
+      bullet.Parent = game.workspace
+      
+      local att = Instance.new("Attachment")
+      att.Parent = bullet
+      print("attachment created")
+      
+      local lv = Instance.new("LinearVelocity")
+      lv.MaxForce = math.huge
+      lv.Attachment0 = att
+      lv.VectorVelocity = hrp.CFrame.LookVector * 25
+      lv.Parent = att
+      
+      local projActive = true
+       coroutine.resume(coroutine.create(function()
+          while projActive do
+             sansdamage2event:FireServer(chr.Humanoid, bullet.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.1, "rbxassetid://6653558293", 1, 5)
+             task.wait(0.2)
+          end
+       end))
+       coroutine.resume(coroutine.create(function()
+           while projActive do
+                task.wait()
+                sansdamageevent:FireServer(chr.Humanoid, bullet.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.080, "rbxassetid://6653558293", 1, 20)
+           end
+       end))
+      local hb = createHitbox(bullet, 7) --bug, only works when close
+      hb.Touched:Connect(function(hit)
+    	if hit.parent:FindFirstChild("Humanoid") and hit.parent.Name ~= plr.Name then
+    		print(hit.parent.Name)
+    		erasureDamage(hit)
+    		task.wait()
+    	end
+      end)
+      debris:AddItem(hb, duration)
+      debris:AddItem(bullet, duration)
+      task.wait(0.5)
+      standTransparent(true)
+      deb = true
+      task.wait(duration)
+      projActive = false
+      moveactive = false 
+    end
+end
+
+local inBeatdown = false
+function beatdown()
+   if not moveactive and not moveactive2 and not inBeatdown then
+        moveactive = true
+        moveactive2 = true
+        holdanim:Play(0.1, 3, 2)
+        local impact = createHitbox(rightarm, 1.5)
+        impact.Touched:Connect(function(hit)
+            if hit.parent:FindFirstChild("Humanoid") and hit.parent.Name ~= plr.Name and not inBeatdown then
+               print("hit")
+               inBeatdown = true
+               impact:Destroy()
+               human.WalkSpeed = 0
+               human.JumpHeight = 0
+               holdanim:Stop()
+               grabanim:Play(0.1, 1, 1)
+               anchorChar(hit.parent, true)
+               task.wait(0.1)
+               standTransparent(false)
+               hrp.CFrame = hit.parent.HumanoidRootPart.CFrame * CFrame.new(0, 0, -4.8)
+               chr:PivotTo(CFrame.new(chr.PrimaryPart.Position, hit.parent.PrimaryPart.Position))
+               thehandkickanim:Play(0.1, 3, 3)
+               coroutine.resume(coroutine.create(function()
+                  for i = 1, 25, 1 do
+                      sansdamageevent:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame * CFrame.new(math.random(-2, 2), math.random(-2, 2), math.random(-2, 2)), 0, 0, Vector3.new(0, 0, 0), 0.03, "rbxassetid://6265148218", 1, 3)
+                      damage3event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 5, 10, Vector3.new(0, 0,0), 0.01, "rbxassetid://1921987900", 1, 25)
+                      sansdamage2event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.001, "rbxassetid://5705780506", 1, 2.5)
+                      task.wait(0.1)
+                  end
+                  task.wait(0.03)
+                  damage3event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 30, 10, Vector3.new(0, 0,0), 0.01, "rbxassetid://1921987900", 1, 25)
+                  sansdamage2event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.001, "rbxassetid://6459218582", 1, 7)
+                  task.wait(0.4)
+                  damage3event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 15, 10, Vector3.new(0, 0,0), 0.01, "rbxassetid://1921987900", 1, 25)
+                  sansdamage2event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.001, "rbxassetid://9076225494", 1, 7)
+                  task.wait(0.63)
+                  damage3event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 45, 10, Vector3.new(0, 0,0), 0.01, "rbxassetid://1921987900", 1, 25)
+                  sansdamage2event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 30, 0, Vector3.new(0, 0, 0), 0.001, "rbxassetid://4766119678", 1, 5)
+                  knockevent:FireServer(hit.parent.Humanoid)
+               end))
+               
+               task.wait(2.5)
+               grabanim:Stop()
+               thehandkickanim:Stop()
+               standTransparent(true)
+               hrp.CFrame = hit.parent.HumanoidRootPart.CFrame * CFrame.new(0, 0, -2)
+               chr:PivotTo(CFrame.new(chr.PrimaryPart.Position, hit.parent.PrimaryPart.Position))
+               uppercutanim:Play(0.1, 3, 3)
+               task.wait(0.4)
+               uppercutanim:Stop()
+               jab2:Play(0.1, 2, 2)
+               task.wait(0.4)
+               dashjabanim:Play(0.1, 2, 2)
+               task.wait(0.6)
+               standTransparent(false)
+               thehandslashanim:Play(0.1, 2, 2)
+               task.wait(0.3)
+               local hb = createHitbox(stand["Stand Right Arm"], 1.5)
+               hb.Touched:Connect(function(hit)
+               if hit.parent:FindFirstChild("Humanoid") and hit.parent.Name ~= plr.Name then
+                    erasureDamage(hit)
+                    task.wait(0.01)
+               end
+                debounce = false
+               end)
+               debris:AddItem(hb, 0.7)
+               task.wait(0.7)
+               standTransparent(true)
+               if hit.parent then
+                anchorChar(hit.parent, false)
+               end
+               human.WalkSpeed = 20
+               human.JumpHeight = 50
+               inBeatdown = false
+            end
+        end)
+        task.wait(0.4)
+        debris:AddItem(impact, 0.2)
+        task.wait(0.4)
+        moveactive = false
+        moveactive2 = false
+   end
+end
+
+-- STAND MOVESET FUNCTIONS
+function switchmodes()
+   if currentMode == modes[1] then
+       currentMode = modes[2]
+    else
+        currentMode = modes[1]
+   end
+end
+
+local isPosing = false
+function pose()
+    if poseCooldown == false then
+        poseCooldown = true
+        if moveactive == false and moveactive2 == false and isPosing == false then
+            moveactive = true
+            moveactive2 = true
+            isPosing = true
+            human.WalkSpeed = 0
+            human.JumpPower = 0
+            pose2anim:Play(0.1, 1, 1)
+            standTransparent(false)
+            sansdamage2event:FireServer(human, chr.HumanoidRootPart.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.001, "rbxassetid://4634621056", 1, 5)
+            task.wait(1)
+            pose2anim:Stop()
+            poseanim:Play(0.1, 1, 1)
+            poseevent:FireServer(true)
+            coroutine.resume(coroutine.create(function()
+                start = tick()
+                while isPosing == true do
+                    sansdamage2event:FireServer(human, chr.HumanoidRootPart.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.00001, poseMusic, 1, 5) 
+                    task.wait(0.65)
+                end
+            end))
+        elseif moveactive == true and isPosing == true then
+            poseanim:Stop()
+            standTransparent(true)
+            poseevent:FireServer(false)
+            moveactive = false
+             moveactive2 = false
+            isPosing = false
+            human.JumpPower = 50
+            human.WalkSpeed = 20
+        end
+        coroutine.resume(coroutine.create(function()
+               task.wait(1)
+               poseCooldown = false
+        end))
+    end    
+end
+
+local tauntcooldown = false
+function taunt()
+   if tauntcooldown == false then
+    tauntcooldown = true
+	local randomline = math.random(1, 2)
+	    if randomline == 1 then -- only one taunt atm
+            tauntevent:FireServer(head, "rbxassetid://4634540982", 5, 0, 0)
+	    elseif randomline == 2 then
+            tauntevent:FireServer(head, "rbxassetid://4634052036", 5, 0, 0)
+    end
+   end
+   task.spawn(function()
+        task.wait(0.8)
+        tauntcooldown = false
+    end)
+end
+
+local isSurfing = false
+function surf()
+    if moveactive2 == false then
+       moveactive2 = true
+       isSurfing= true
+       local att = Instance.new("Attachment")
+       att.Parent = hrp
+       print("attachment made")
+       local lv = Instance.new("LinearVelocity")
+       lv.MaxForce = math.huge 
+       print("direction established")
+       lv.Attachment0 = att
+       coroutine.resume(coroutine.create(function()
+          surfanim:Play(0.1, 3, 3)
+          while isSurfing == true do
+             local lvc = lv:Clone()
+             lvc.VectorVelocity = hrp.CFrame.LookVector.Unit * 100
+             lvc.Parent = att
+             task.wait()
+             lvc:Destroy()
+          end
+        end))
+        coroutine.resume(coroutine.create(function()
+           while isSurfing == true do
+              replicatedstorage.VampireDash:FireServer(BrickColor.new(Color3.new(30, 40, 0)))
+              task.wait(0.1) 
+           end
+        end))
+       mouse.KeyUp:Connect(function(key)
+          if key == "c" then
+             isSurfing = false
+             moveactive2 = false
+             surfanim:Stop()
+          end
+       end)
+    end
+end
+
+function blackHoleErasure()
+    if moveactive2 == false then
+       moveactive2 = true
+       human.WalkSpeed = 0
+       human.JumpPower = 0
+       local bhActive = true
+       local deb = false
+       standTransparent(false)
+       thehandgroundanim:Play(0.1, 1, 1)
+       coroutine.resume(coroutine.create(function()
+           start = tick()
+           while deb == false do
+                sansdamage2event:FireServer(human, chr.HumanoidRootPart.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.001, voiceLines[3], 1, 5)
+                task.wait(0.65) 
+           end
+        end))
+       task.wait(1)
+       sansdamage2event:FireServer(chr.Humanoid, chr.HumanoidRootPart.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.01, "rbxassetid://6185097708", 1, 20)
+       deb = true
+       local hb = createHitbox(hrp, Vector3.new(50,100,100))
+       local hb2 = createHitbox(hrp, Vector3.new(15,15,25))
+       standTransparent(true)
+       coroutine.resume(coroutine.create(function()
+          while bhActive do
+             replicatedstorage.RTZEffect:FireServer(true)
+             replicatedstorage.Jump2:FireServer(BrickColor.new("White"))
+             replicatedstorage.UR2:FireServer(2)
+             sansdamage2event:FireServer(chr.Humanoid, chr.HumanoidRootPart.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.01, sfx[5], 1, 10)
+             task.wait(0.2)
+          end
+             replicatedstorage.RTZEffect:FireServer(false)
+       end))
+       coroutine.resume(coroutine.create(function()
+           while bhActive do
+                task.wait()
+                sansdamageevent:FireServer(chr.Humanoid, chr.HumanoidRootPart.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.4, "rbxassetid://6653558293", 1, 20)
+                replicatedstorage.PlayerStrongPunch2:FireServer(Vector3.new(1, -0.5, 1), Vector3.new(5, 0, 5), BrickColor.new("Phosph. White"))
+           end
+       end))
+       local plrHit = {}
+       hb.Touched:Connect(function(hit)
+           if hit.parent:FindFirstChild("Humanoid") and hit.parent.name ~= plr.Name and not debounce then
+               debounce = true
+               if not table.find(plrHit, hit.parent) then
+                  table.insert(plrHit, hit.parent)
+                  gravityshiftevent:FireServer(hit.parent.Humanoid, 1)
+               end
+           end
+           debounce = false
+       end)
+       hb2.Touched:Connect(function(hit)
+            if table.find(plrHit, hit.parent) then
+               task.wait()
+               erasureDamage(hit)
+            end
+       end)
+       debris:AddItem(hb, 5)
+       debris:AddItem(hb2, 5)
+       task.wait(5)
+       human.WalkSpeed = 20
+       human.JumpPower = 50
+       bhActive = false
+       moveactive2 = false
+    end
+end
+local deb1 = false
+local deb2 = false
+function barrage()
+    if moveactive2 == false then
+       moveactive2 = true
+       standTransparent(false)
+       task.wait(0.2)
+       thehandbarrageanim:Play(0.1, 5, 5)
+       coroutine.resume(coroutine.create(function()
+           start = tick()
+           while moveactive2 == true do
+               sansdamage2event:FireServer(human, chr.HumanoidRootPart.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.001, voiceLines[1], 1, 5)
+               task.wait(0.65)
+           end
+            timePosRes = true
+        end))
+       local plrsHit = {}
+       local plrsHit2 = {}
+       local hb1 = createHitbox(stand["Stand Left Arm"], 1.5)
+       local hb2 = createHitbox(stand["Stand Right Arm"], 1.5)
+       hb1.Touched:Connect(function(hit)
+           if hit.parent:FindFirstChild("Humanoid") and hit.parent.Name ~= plr.Name and not deb1 then
+                deb1 = true
+                if not table.find(plrsHit, hit.parent) then
+                    print("hit")
+                    table.insert(plrsHit, hit.parent)
+                    damageevent:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 10, 0.3, hrp.CFrame.LookVector*20.5, "rbxassetid://241837157", 0.075, Color3.new(255,255,255), "rbxassetid://8704616653", 1, 3.5)
+                    damage3event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 10, 10, Vector3.new(0, 0, 0), 0.01, "rbxassetid://1921987900", 1, 20) 
+                    print("done")
+                    task.wait(0.1)
+                    table.clear(plrsHit)
+                    print("loop")
+                end
+           end
+           deb1 = true
+       end)
+       hb2.Touched:Connect(function(hit)
+          if hit.parent:FindFirstChild("Humanoid") and hit.parent.Name ~= plr.Name and not deb2 then
+                deb2 = true
+                if not table.find(plrsHit2, hit.parent) then
+                    table.insert(plrsHit2, hit.parent)
+                    damageevent:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 10, 0.3, hrp.CFrame.LookVector*20.5, "rbxassetid://241837157", 0.075, Color3.new(255,255,255), "rbxassetid://8704616653", 1, 3.5)
+                    damage3event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 10, 10, Vector3.new(0, 0, 0), 0.01, "rbxassetid://1921987900", 1, 20) 
+                    task.wait(0.1)
+                    table.clear(plrsHit2)
+                end
+                
+          end
+          deb2 = false
+      end)
+       coroutine.resume(coroutine.create(function()
+          task.wait(3)
+          moveactive2 = false
+          thehandbarrageanim:Stop()
+          standTransparent(true)
+          hb1:Destroy()
+          hb2:Destroy()
+       end))
+       
+    end
+end
+
+function erasurepunch()
+    if moveactive2 == false then
+       moveactive2 = true
+       standTransparent(false)
+       thehandstronganim:Play(0.1, 3, 3)
+       sansdamage2event:FireServer(human, chr.HumanoidRootPart.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.001, "rbxassetid://5197638031", 1, 5)
+       sansdamage2event:FireServer(human, chr.HumanoidRootPart.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.001, "rbxassetid://6977512399", 1, 5)
+       local hb = createHitbox(stand["Stand Right Arm"], 1.5)
+        hb.Touched:Connect(function(hit)
+           if hit.parent:FindFirstChild("Humanoid") and hit.parent.Name ~= plr.Name then
+               erasureDamage(hit)
+               task.wait(0.01)
+           end
+            debounce = false
+       end)
+       debris:AddItem(hb, 0.7)
+       task.wait(0.7)
+       standTransparent(true)
+       moveactive2 = false
+    end
+end
+    
+function chop()
+    if moveactive2 == false then
+       moveactive2 = true 
+       standTransparent(false)
+       task.wait(0.3)
+       thehandchopheldanim:Play(0.1, 1.5, 1.5)
+       sansdamage2event:FireServer(human, chr.HumanoidRootPart.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.001, voiceLines[4], 1, 5)
+       coroutine.resume(coroutine.create(function()
+           start = tick
+           while moveactive == true do
+               sansdamage2event:FireServer(human, chr.HumanoidRootPart.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.001, voiceLines[6], 1, 1)
+               task.wait(0.65)
+            end
+       end))
+       task.wait(0.05)
+       thehandchopheldanim:Stop()
+       thehandchopanim:Play(0.1, 2, 2)
+       local plrHit = {}
+       local hb = createHitbox(stand["Stand Right Arm"], 1.5)
+       hb.Touched:Connect(function(hit)
+          if hit.parent:FindFirstChild("Humanoid") and hit.parent.Name ~= plr.Name then
+             if not table.find(plrHit, hit.parent) then
+                table.insert(plrHit, hit.parent)
+                sansdamage2event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 99, 0, Vector3.new(0, 0, 0), 0.001, sfx[3], 1, 5)
+                damage3event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 99, 10, Vector3.new(9e999,9e999,0), 0.01, "rbxassetid://1921987900", 1, 25)
+                damage3event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 99, 10, Vector3.new(9e999,9e999,0), 0.01, "rbxassetid://1921987900", 1, 25)
+                damage3event:FireServer(hit.parent.Humanoid, hit.parent.HumanoidRootPart.CFrame, 99, 10, Vector3.new(9e999,9e999,0), 0.01, "rbxassetid://1921987900", 1, 25)
+                knockevent:FireServer(hit.parent.Humanoid)
+             end
+          end
+       end)
+       debris:AddItem(hb, 0.5)
+       task.wait(0.5)
+       standTransparent(true)
+       moveactive2 = false
+    end
+end
+    
+function spaceErasure()
+    if moveactive == false then
+        moveactive = true
+        standTransparent(false)
+        thehandslashanim:Play(0.1, 2, 2)
+        sansdamage2event:FireServer(chr.Humanoid, chr.HumanoidRootPart.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.01, "rbxassetid://6440601054", 1, 10)
+        task.wait(0.4)
+        sansdamage2event:FireServer(chr.Humanoid, chr.HumanoidRootPart.CFrame, 0, 0, Vector3.new(0, 0, 0), 0.01, "rbxassetid://1921987900", 1, 10)
+        local p = Instance.new("Part", game.workspace)
+        p.Size = Vector3.new(2, 2, 2)
+        p.Transparency = 1
+        p.Anchored = true
+        p.CanCollide = false
+        p.Position = mouse.Hit.Position
+        local hb = createHitbox(p, 4.5)
+        local filter = OverlapParams.new()
+        filter.FilterType = Enum.RaycastFilterType.Blacklist
+        filter.FilterDescendantsInstances = { p }
+        local found = workspace:GetPartsInPart(hb, filter)
+        for _, hit in pairs(found) do
+           if hit.parent:FindFirstChild("Humanoid") and hit.parent.Name ~= plr.Name then
+                gravityshiftevent:FireServer(hit.parent.Humanoid, 0)
+                knockevent:FireServer(hit.Parent.Humanoid)
+                hb:Destroy()
+                p:Destroy()
+            end 
+        end
+        task.wait(0.05)
+        if p and hb then
+           hb:Destroy()
+           p:Destroy()
+        end
+        standTransparent(true)
+        moveactive = false
+    end
+end
+
+--execution area
+game:GetService("StarterGui"):SetCore("SendNotification",{
+    Title = "MUGEN Okuyasu",
+    Text = "Made by coolman6687",
+    Duration = 5
+    
+})
+
+standTransparent(true)
+replicatedstorage.UR2:FireServer(2)
+destroyStandMoveset()
+blockevent:FireServer(true)
+task.wait(0.5)
+coroutine.resume(coroutine.create(function()
+   while game:GetService("RunService").RenderStepped:Wait() do
+     for _, v in pairs(chr.HumanoidRootPart:GetChildren()) do
+          if v:IsA("BodyVelocity") or v:IsA("BodyPosition") or v:IsA("BodyAngularVelocity") or v:IsA("BodyForce") or v:IsA("BodyGyro") or v:IsA("BodyThrust") or v:IsA("LinearVelocity") then
+            if (v.Name ~= "bvel") then
+                print(v.Name)
+                v:Destroy()
+            end
+          end
+     end
+       human.PlatformStand = false
+       chr.Ragdoll.Value = false
+       chr.Disabled.Value = false
+       if not inBeatdown then
+           for _, p in pairs(chr:GetChildren()) do
+             if p:IsA("Part") and p.Anchored == true then
+                p.Anchored = false
+                task.wait()
+             end
+           end
+           human.WalkSpeed = 20
+           human.JumpPower = 50
+        end
+     end  
+end))
+
+game.workspace.Effects.DescendantAdded:Connect(function(obj)
+   if obj:IsA("Sound") then
+       if obj.SoundId == poseMusic or table.find(songs, obj.SoundId) or table.find(voiceLines, obj.SoundId) then
+            game:GetService("ContentProvider"):PreloadAsync({obj})
+            obj.TimePosition = 0
+            if obj.Looped == true then
+                obj.Looped = false
+            end
+            obj.TimePosition = tick() - start
+            length = obj.TimeLength
+            if obj.TimePosition > length then
+                obj.Looped = true
+            end
+       end
+    end
+end)
+
+human.HealthChanged:Connect(function()
+   if human.Health <= 0 then
+       replicatedstorage.Death:FireServer(false)
+       dead = true
+    end
+end)
+
+mouse.Button1Down:Connect(function()
+    jab()    
+end)
+mouse.KeyDown:Connect(function(key)
+   if key == "q" then
+       switchmodes() 
+   elseif key == "k" then
+	   toggleeffects()
+   end
+	
+   if currentMode == modes[1] then
+       if key == "e" then
+           uppercut()
+       elseif key == "f" then
+    		miniBlackHole()
+       elseif key == "r" then
+            slapkick()
+       elseif key == "t" then
+            beatdown()
+       elseif key == "c" then
+           dash()
+       end
+   elseif currentMode == modes[2] then
+        if key == "e" then
+            barrage()
+        elseif key == "r" then
+            erasurepunch()
+        elseif key == "f" then
+            blackHoleErasure()
+        elseif key == "t" then
+            chop()
+        elseif key == "p" then
+            pose()
+        elseif key == "v" then
+            spaceErasure()
+        elseif key == "n" then
+            taunt()
+        elseif key == "c" then
+            surf()
+        end
+   end
+end)
+
+effectsactive.Changed:Connect(function()
+    print("changed")
+    coroutine.resume(coroutine.create(function()
+   i = 0
+   while effectsactive.Value == true do
+       sansdamageevent:FireServer(human, head.CFrame * CFrame.new(3 * math.cos(math.rad(i)), 3 * math.sin(math.rad(i)), 0.95), 0, 0, Vector3.new(0, 0, 0), 0.004, "rbxassetid://1921987900", 1, 20)
+       --replicatedstorage.Damage11:FireServer(human, head.CFrame * CFrame.new(math.cos(math.rad(i+105)), 2.5, math.sin(math.rad(i+105))), 0, 0, Vector3.new(0, 0, 0), 0.01, "rbxassetid://1921987900", 0, 0)
+       i = i + 15
+       task.wait()
+   end
+end))
+
+coroutine.resume(coroutine.create(function()
+  local i = 0
+  while effectsactive.Value == true do
+    replicatedstorage.VampireDash:FireServer(BrickColor.new(Color3.new(0, 50 * math.sin(math.rad(i)), 50 * math.cos(math.rad(i)))))  
+    i = i + 5
+    task.wait(0.2)
+  end
+end))
+end)
+
 
