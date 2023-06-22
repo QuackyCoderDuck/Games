@@ -1,0 +1,34 @@
+getgenv().farm = true --set to false if you want to untoggle
+getgenv().delay = 1 --delay between teleport
+--locals
+local toggled
+local last_tick = tick()
+local current_gate = 1
+if getgenv().farm and toggled ~= true then
+    game:GetService("RunService").RenderStepped:connect(function()
+        if getgenv().farm then 
+            local gates_target = {}
+            game:GetService("ReplicatedStorage").Clickspeed:InvokeServer()
+            for i, v in pairs(workspace.Map.winGates:GetChildren()) do
+                if v:IsA("BasePart") and string.find(v.Name, "gate") then
+                    table.insert(gates_target, {Name = v.Name, CFrame = v.CFrame, List_Position = tonumber(string.match(v.Name, "gate(.*)"))})
+                end
+            end
+            table.sort(gates_target, function(a, b) 
+                return a.List_Position < b.List_Position
+            end)
+            if tick() - last_tick > getgenv().delay then
+                if current_gate <= #gates_target then
+                    current_gate += 1
+                else
+                    current_gate = 1
+                end
+                local targetpostomove = gates_target[current_gate].CFrame
+                ToTargetTween = game:GetService("TweenService"):Create(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(getgenv().delay/4, Enum.EasingStyle.Linear), {CFrame = targetpostomove})
+                ToTargetTween:Play()
+                last_tick = tick()
+            end
+        end
+    end)
+    toggled = true
+end
