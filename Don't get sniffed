@@ -1,0 +1,14 @@
+spawn(function()
+	for i, v in next, workspace.KeyDoors.Portal:GetDescendants() do
+		if (v:IsA('TouchTransmitter')) and (v.Parent.Name:find('Portal')) then
+game.Players.LocalPlayer.Character.HumanoidRootPart:PivotTo(v.Parent.CFrame)
+		end
+	end
+end)
+delay(1, function()
+	for i, v in next, workspace.KeyDoors.Portal:GetDescendants() do
+		if (v:IsA('TouchTransmitter')) and (v.Parent.Name:find('spiral')) then
+game.Players.LocalPlayer.Character.HumanoidRootPart:PivotTo(v.Parent.CFrame)
+		end
+	end
+end)
